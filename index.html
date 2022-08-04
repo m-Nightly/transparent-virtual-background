@@ -25,30 +25,32 @@
 	const canvasCtx = canvasElement.getContext("2d");
 
 	function onResults(results) {
-		console.log(results);
+		try {
+			canvasCtx.save();
+			canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+			// canvasCtx.drawImage(imgElement, 0, 0, canvasElement.width, canvasElement.height);
+			canvasCtx.drawImage(results.segmentationMask, 0, 0, canvasElement.width, canvasElement.height);
+			// canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
 
-		canvasCtx.save();
-		canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-		// canvasCtx.drawImage(imgElement, 0, 0, canvasElement.width, canvasElement.height);
-		canvasCtx.drawImage(results.segmentationMask, 0, 0, canvasElement.width, canvasElement.height);
-		// canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
+			canvasCtx.globalCompositeOperation = "source-out";
+			canvasCtx.drawImage(imgElement, 0, 0, canvasElement.width, canvasElement.height);
+			// canvasCtx.fillRect(0, 0, canvasElement.width, canvasElement.height);
 
-		canvasCtx.globalCompositeOperation = "source-out";
-		canvasCtx.drawImage(imgElement, 0, 0, canvasElement.width, canvasElement.height);
-		// canvasCtx.fillRect(0, 0, canvasElement.width, canvasElement.height);
+			// Only overwrite missing pixels.
+			canvasCtx.globalCompositeOperation = "destination-atop";
+			canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
 
-		// Only overwrite missing pixels.
-		canvasCtx.globalCompositeOperation = "destination-atop";
-		canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
+			canvasCtx.globalCompositeOperation = "source-over";
 
-		canvasCtx.globalCompositeOperation = "source-over";
+			// Only overwrite existing pixels.
+			// canvasCtx.globalCompositeOperation = "source-out";
+			// canvasCtx.fillStyle = "#00FF00";
+			// canvasCtx.fillRect(0, 0, canvasElement.width, canvasElement.height);
 
-		// Only overwrite existing pixels.
-		// canvasCtx.globalCompositeOperation = "source-out";
-		// canvasCtx.fillStyle = "#00FF00";
-		// canvasCtx.fillRect(0, 0, canvasElement.width, canvasElement.height);
-
-		canvasCtx.restore();
+			canvasCtx.restore();
+		} catch (e) {
+			console.log(e);
+		}
 	}
 
 	const pose = new Pose({
