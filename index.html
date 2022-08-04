@@ -23,15 +23,8 @@
 	const videoElement = document.getElementsByClassName("input_video")[0];
 	const canvasElement = document.getElementsByClassName("output_canvas")[0];
 	const canvasCtx = canvasElement.getContext("2d");
-	const landmarkContainer = document.getElementsByClassName("landmark-grid-container")[0];
-	const grid = new LandmarkGrid(landmarkContainer);
 
 	function onResults(results) {
-		if (!results.poseLandmarks) {
-			grid.updateLandmarks([]);
-			return;
-		}
-
 		console.log(results);
 
 		canvasCtx.save();
@@ -56,8 +49,6 @@
 		// canvasCtx.fillRect(0, 0, canvasElement.width, canvasElement.height);
 
 		canvasCtx.restore();
-
-		grid.updateLandmarks(results.poseWorldLandmarks);
 	}
 
 	const pose = new Pose({
