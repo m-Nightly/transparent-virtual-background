@@ -11,10 +11,11 @@
 
 	<body>
 		<div class="container">
-			<img class="input_img" src="./bg.webp" style="display: hidden" />
+			<img class="input_img" src="./color-bg.jpg" style="display: hidden" />
 			<video class="input_video"></video>
-			<canvas class="output_canvas" width="1280px" height="720px"></canvas>
+			<canvas class="output_canvas" width="3840px" height="2160px"></canvas>
 			<div class="landmark-grid-container"></div>
+			sla
 		</div>
 	</body>
 </html>
@@ -66,13 +67,14 @@
 		},
 	});
 	pose.setOptions({
-		modelComplexity: 1,
+		modelComplexity: 2,
 		smoothLandmarks: true,
 		enableSegmentation: true,
 		smoothSegmentation: true,
-		minDetectionConfidence: 0.5,
-		minTrackingConfidence: 0.5,
+		minDetectionConfidence: 0.75,
+		minTrackingConfidence: 0.75,
 		effect: "background",
+		self,
 	});
 	pose.onResults(onResults);
 
@@ -80,8 +82,8 @@
 		onFrame: async () => {
 			await pose.send({ image: videoElement });
 		},
-		width: 1280,
-		height: 720,
+		width: 3840,
+		height: 2160,
 	});
 	camera.start();
 </script>
